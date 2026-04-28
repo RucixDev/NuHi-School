@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#6200EE"
+            app:titleTextColor="@android:color/white" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!-- AI Suggestion Card -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/suggestion_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:visibility="gone"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="#E3F2FD">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <TextView
+                    android:id="@+id/suggestion_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="AI Suggestion"
+                    android:textSize="14sp"
+                    android:textColor="#1565C0" />
+
+                <ProgressBar
+                    android:id="@+id/suggestion_progress"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Canvas Area -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <com.nuhi.nu_hi_school.ui.canvas.CanvasView
+                android:id="@+id/canvas_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white" />
+
+        </FrameLayout>
+
+        <!-- Toolbar Actions -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="#F5F5F5"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="8dp">
+
+                <Button
+                    android:id="@+id/btn_undo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="↩️"
+                    android:textSize="20sp"
+                    style="@style/Widget.AppCompat.Button.Borderless" />
+
+                <Button
+                    android:id="@+id/btn_redo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="↪️"
+                    android:textSize="20sp"
+                    style="@style/Widget.AppCompat.Button.Borderless" />
+
+                <Button
+                    android:id="@+id/btn_clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🗑️"
+                    android:textSize="20sp"
+                    style="@style/Widget.AppCompat.Button.Borderless" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="32dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:background="#CCCCCC" />
+
+                <Button
+                    android:id="@+id/btn_pen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🖊️ Pen"
+                    style="@style/Widget.AppCompat.Button.Borderless" />
+
+                <Button
+                    android:id="@+id/btn_eraser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🧹 Eraser"
+                    style="@style/Widget.AppCompat.Button.Borderless" />
+
+                <Button
+                    android:id="@+id/btn_background"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🌙"
+                    style="@style/Widget.AppCompat.Button.Borderless" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="32dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:background="#CCCCCC" />
+
+                <Button
+                    android:id="@+id/btn_ai_suggest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🤖 AI"
+                    style="@style/Widget.AppCompat.Button.Borderless" />
+
+                <Button
+                    android:id="@+id/btn_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="💾 Save"
+                    style="@style/Widget.AppCompat.Button.Borderless" />
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

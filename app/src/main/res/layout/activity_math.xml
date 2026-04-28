@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#FF9800"
+            app:titleTextColor="@android:color/white" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!-- Category Selector -->
+        <Spinner
+            android:id="@+id/spinner_category"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@android:drawable/btn_dropdown"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Math Input -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@android:color/white"
+            android:layout_marginBottom="8dp">
+
+            <EditText
+                android:id="@+id/edit_math_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter math problem (e.g., 2x + 5 = 15)"
+                android:inputType="text"
+                android:padding="12dp"
+                android:textSize="18sp"
+                android:minHeight="60dp" />
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Quick Symbol Buttons -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:layout_marginBottom="8dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button android:id="@+id/btn_plus" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="+" style="@style/Widget.AppCompat.Button.Borderless" />
+                <Button android:id="@+id/btn_minus" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-" style="@style/Widget.AppCompat.Button.Borderless" />
+                <Button android:id="@+id/btn_multiply" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="×" style="@style/Widget.AppCompat.Button.Borderless" />
+                <Button android:id="@+id/btn_divide" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="÷" style="@style/Widget.AppCompat.Button.Borderless" />
+                <Button android:id="@+id/btn_power" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="^" style="@style/Widget.AppCompat.Button.Borderless" />
+                <Button android:id="@+id/btn_root" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="√" style="@style/Widget.AppCompat.Button.Borderless" />
+                <Button android:id="@+id/btn_pi" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="π" style="@style/Widget.AppCompat.Button.Borderless" />
+                <Button android:id="@+id/btn_open_paren" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="(" style="@style/Widget.AppCompat.Button.Borderless" />
+                <Button android:id="@+id/btn_close_paren" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text=")" style="@style/Widget.AppCompat.Button.Borderless" />
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:layout_marginBottom="8dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button android:id="@+id/btn_sin" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="sin" style="@style/Widget.AppCompat.Button.Borderless" />
+                <Button android:id="@+id/btn_cos" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="cos" style="@style/Widget.AppCompat.Button.Borderless" />
+                <Button android:id="@+id/btn_tan" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="tan" style="@style/Widget.AppCompat.Button.Borderless" />
+                <Button android:id="@+id/btn_log" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="log" style="@style/Widget.AppCompat.Button.Borderless" />
+                <Button android:id="@+id/btn_ln" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="ln" style="@style/Widget.AppCompat.Button.Borderless" />
+                <Button android:id="@+id/btn_x" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="x" style="@style/Widget.AppCompat.Button.Borderless" />
+                <Button android:id="@+id/btn_y" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="y" style="@style/Widget.AppCompat.Button.Borderless" />
+                <Button android:id="@+id/btn_integral" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="∫" style="@style/Widget.AppCompat.Button.Borderless" />
+                <Button android:id="@+id/btn_sum" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="∑" style="@style/Widget.AppCompat.Button.Borderless" />
+                <Button android:id="@+id/btn_infinity" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="∞" style="@style/Widget.AppCompat.Button.Borderless" />
+                <Button android:id="@+id/btn_degree" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="°" style="@style/Widget.AppCompat.Button.Borderless" />
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+        <!-- Solve Button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <Button
+                android:id="@+id/btn_clear"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Clear"
+                android:layout_marginEnd="4dp" />
+
+            <Button
+                android:id="@+id/btn_solve"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Solve"
+                android:backgroundTint="#FF9800"
+                android:layout_marginStart="4dp" />
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_math"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <!-- Result -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="#FFF3E0"
+            android:layout_marginBottom="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Result"
+                    android:textSize="12sp"
+                    android:textColor="#666666"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/text_result"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="#FF9800" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Steps -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_steps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="@android:color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Steps"
+                    android:textSize="12sp"
+                    android:textColor="#666666"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/text_steps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="14sp"
+                    android:textColor="#333333" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

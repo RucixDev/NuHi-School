@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-feature android:name="android.hardware.touchscreen" android:required="true" />
+    <uses-feature android:name="android.hardware.touchscreen.multitouch" android:required="false" />
+    <uses-feature android:name="android.hardware.touchscreen.multitouch.distinct" android:required="false" />
+    <uses-feature android:name="android.hardware.stylus" android:required="false" />
+    <uses-feature android:name="android.hardware.touchpen" android:required="false" />
+
+    <application
+        android:name=".NuHiSchoolApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.NuHiSchool"
+        android:hardwareAccelerated="true">
+
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.canvas.CanvasActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".ui.training.TrainingActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|screenLayout" />
+
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|screenLayout" />
+
+        <activity
+            android:name=".ui.translation.TranslationActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|screenLayout" />
+
+        <activity
+            android:name=".ui.math.MathActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|screenLayout" />
+
+    </application>
+</manifest>
