@@ -50,6 +50,30 @@ class CanvasActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Notepad"
         binding.toolbar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
+        binding.toolbar.setOnClickListener {
+            showTitleEditDialog()
+        }
+    }
+
+    private fun showTitleEditDialog() {
+        val editText = EditText(this).apply {
+            setText(note?.title ?: "Untitled")
+            setSelection(text.length)
+            setPadding(48, 24, 48, 24)
+        }
+        AlertDialog.Builder(this)
+            .setTitle("Note Title")
+            .setView(editText)
+            .setPositiveButton("Save") { _, _ ->
+                val newTitle = editText.text.toString().trim().ifBlank { "Untitled" }
+                note?.title = newTitle
+                supportActionBar?.title = newTitle
+                scope.launch {
+                    note?.let { noteRepository.saveNote(it) }
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     private fun setupCanvas() {
@@ -122,6 +146,7 @@ class CanvasActivity : AppCompatActivity() {
             note?.let {
                 it.contentPath = path
                 it.backgroundColor = if (isDarkMode) "#1A1A1A" else "#FFFFFF"
+                it.updatedAt = System.currentTimeMillis()
                 noteRepository.saveNote(it)
             }
             Toast.makeText(this@CanvasActivity, "Note saved!", Toast.LENGTH_SHORT).show()

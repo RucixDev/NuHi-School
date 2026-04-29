@@ -14,6 +14,8 @@ class TrainingCanvasView(context: Context, attrs: AttributeSet? = null) : View(c
     private val strokes = mutableListOf<Stroke>()
     private var currentStroke: Stroke? = null
     private val strokePoints = mutableListOf<StrokePoint>()
+    private val eraserRadius = 30f
+    private var isEraser = false
 
     private val paint = Paint().apply {
         isAntiAlias = true
@@ -82,13 +84,22 @@ class TrainingCanvasView(context: Context, attrs: AttributeSet? = null) : View(c
         val y = event.y
         val pressure = if (event.pressure > 0) event.pressure else 1f
 
+        val toolType = event.getToolType(0)
+        val isStylusEraser = toolType == MotionEvent.TOOL_TYPE_ERASER
+
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                currentStroke = Stroke(
-                    points = mutableListOf(StrokePoint(x, y, pressure)),
-                    color = Color.BLACK,
-                    width = 5f * pressure.coerceIn(0.5f, 2f)
-                )
+                if (isStylusEraser) {
+                    isEraser = true
+                    eraseAt(x, y)
+                } else {
+                    isEraser = false
+                    currentStroke = Stroke(
+                        points = mutableListOf(StrokePoint(x, y, pressure)),
+                        color = Color.BLACK,
+                        width = 5f * pressure.coerceIn(0.5f, 2f)
+                    )
+                }
                 lastX = x
                 lastY = y
                 invalidate()
@@ -96,24 +107,45 @@ class TrainingCanvasView(context: Context, attrs: AttributeSet? = null) : View(c
             }
 
             MotionEvent.ACTION_MOVE -> {
-                currentStroke?.points?.add(StrokePoint(x, y, pressure))
+                if (isEraser) {
+                    eraseAt(x, y)
+                } else {
+                    currentStroke?.points?.add(StrokePoint(x, y, pressure))
+                }
                 lastX = x
                 lastY = y
                 invalidate()
                 return true
             }
 
-            MotionEvent.ACTION_UP -> {
-                currentStroke?.let {
-                    strokes.add(it)
-                    strokePoints.addAll(it.points)
+            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                if (!isEraser) {
+                    currentStroke?.let {
+                        strokes.add(it)
+                        strokePoints.addAll(it.points)
+                    }
                 }
                 currentStroke = null
+                isEraser = false
                 invalidate()
                 return true
             }
         }
         return super.onTouchEvent(event)
+    }
+
+    private fun eraseAt(x: Float, y: Float) {
+        val iterator = strokes.iterator()
+        while (iterator.hasNext()) {
+            val stroke = iterator.next()
+            for (point in stroke.points) {
+                val dist = kotlin.math.sqrt((point.x - x) * (point.x - x) + (point.y - y) * (point.y - y))
+                if (dist < eraserRadius) {
+                    iterator.remove()
+                    break
+                }
+            }
+        }
     }
 
     fun clear() {

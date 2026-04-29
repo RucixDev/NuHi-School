@@ -25,16 +25,22 @@ class MainActivity : AppCompatActivity() {
     private val notes = mutableListOf<Note>()
     private lateinit var adapter: NotesAdapter
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    private lateinit var noteRepository: NoteRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        noteRepository = NoteRepository(this)
         setupToolbar()
         setupNotesList()
         setupFab()
         setupSchoolFeatures()
+    }
+
+    override fun onResume() {
+        super.onResume()
         loadNotes()
     }
 
@@ -44,9 +50,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupNotesList() {
-        adapter = NotesAdapter(notes, this) { note ->
-            openCanvas(note)
-        }
+        adapter = NotesAdapter(notes, this, { note -> openCanvas(note) }, { note -> deleteNote(note) })
         binding.notesList.layoutManager = LinearLayoutManager(this)
         binding.notesList.adapter = adapter
     }
@@ -79,12 +83,37 @@ class MainActivity : AppCompatActivity() {
         binding.cardSettings.setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
+        // Subject cards
+        binding.cardBiology.setOnClickListener {
+            openSubjectCanvas("Biology", "#4CAF50")
+        }
+        binding.cardPhysics.setOnClickListener {
+            openSubjectCanvas("Physics", "#9C27B0")
+        }
+        binding.cardChemistry.setOnClickListener {
+            openSubjectCanvas("Chemistry", "#FF5722")
+        }
+        binding.cardHistory.setOnClickListener {
+            openSubjectCanvas("History", "#795548")
+        }
+    }
+
+    private fun openSubjectCanvas(subject: String, color: String) {
+        val note = Note(
+            id = System.currentTimeMillis(),
+            title = subject,
+            contentPath = "",
+            createdAt = System.currentTimeMillis(),
+            backgroundColor = "#FFFFFF"
+        )
+        notes.add(0, note)
+        adapter.notifyItemInserted(0)
+        openCanvas(note)
     }
 
     private fun loadNotes() {
         scope.launch {
-            val repo = NoteRepository(this@MainActivity)
-            val loaded = repo.getAllNotes()
+            val loaded = noteRepository.getAllNotes()
             notes.clear()
             notes.addAll(loaded)
             adapter.notifyDataSetChanged()
@@ -96,6 +125,21 @@ class MainActivity : AppCompatActivity() {
             putExtra("note_id", note.id)
         }
         startActivityForResult(intent, REQUEST_CANVAS)
+    }
+
+    private fun deleteNote(note: Note) {
+        AlertDialog.Builder(this)
+            .setTitle("Delete Note")
+            .setMessage("Delete \"${note.title}\"?")
+            .setPositiveButton("Delete") { _, _ ->
+                scope.launch {
+                    noteRepository.deleteNote(note.id)
+                    notes.remove(note)
+                    adapter.notifyDataSetChanged()
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -113,7 +157,8 @@ class MainActivity : AppCompatActivity() {
     class NotesAdapter(
         private val notes: List<Note>,
         private val activity: Activity,
-        private val onNoteClick: (Note) -> Unit
+        private val onNoteClick: (Note) -> Unit,
+        private val onNoteDelete: (Note) -> Unit
     ) : RecyclerView.Adapter<NotesAdapter.ViewHolder>() {
 
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -131,8 +176,14 @@ class MainActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val note = notes[position]
             holder.title.text = note.title
-            holder.preview.text = "Tap to open"
+            val date = java.text.SimpleDateFormat("MMM d, HH:mm", java.util.Locale.getDefault())
+                .format(java.util.Date(note.updatedAt))
+            holder.preview.text = "Last edited: $date"
             holder.card.setOnClickListener { onNoteClick(note) }
+            holder.card.setOnLongClickListener {
+                onNoteDelete(note)
+                true
+            }
         }
 
         override fun getItemCount() = notes.size

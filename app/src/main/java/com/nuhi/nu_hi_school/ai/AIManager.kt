@@ -3,7 +3,12 @@ package com.nuhi.nu_hi_school.ai
 import android.content.Context
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
+import com.google.mlkit.common.model.DownloadConditions
+import com.google.mlkit.nl.translate.TranslateLanguage
+import com.google.mlkit.nl.translate.Translation
+import com.google.mlkit.nl.translate.TranslatorOptions
 import kotlinx.coroutines.*
+import kotlinx.coroutines.tasks.await
 import java.util.*
 
 data class MathResult(
@@ -15,6 +20,27 @@ class AIManager(private val context: Context) {
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     private var tts: TextToSpeech? = null
     private var ttsReady = false
+
+    private val languageCodeMap = mapOf(
+        "en" to TranslateLanguage.ENGLISH,
+        "pl" to TranslateLanguage.POLISH,
+        "de" to TranslateLanguage.GERMAN,
+        "fr" to TranslateLanguage.FRENCH,
+        "es" to TranslateLanguage.SPANISH,
+        "it" to TranslateLanguage.ITALIAN,
+        "pt" to TranslateLanguage.PORTUGUESE,
+        "ru" to TranslateLanguage.RUSSIAN,
+        "zh" to TranslateLanguage.CHINESE,
+        "ja" to TranslateLanguage.JAPANESE,
+        "ko" to TranslateLanguage.KOREAN,
+        "ar" to TranslateLanguage.ARABIC,
+        "hi" to TranslateLanguage.HINDI,
+        "nl" to TranslateLanguage.DUTCH,
+        "el" to TranslateLanguage.GREEK,
+        "tr" to TranslateLanguage.TURKISH,
+        "vi" to TranslateLanguage.VIETNAMESE,
+        "th" to TranslateLanguage.THAI
+    )
 
     init {
         initTTS()
@@ -120,8 +146,31 @@ class AIManager(private val context: Context) {
 
     suspend fun translateText(text: String, sourceLang: String, targetLang: String): String =
         withContext(Dispatchers.IO) {
-            // Simple translation placeholder - in production would use ML Kit Translate
-            "Translation of '$text' from $sourceLang to $targetLang"
+            try {
+                val sourceCode = languageCodeMap[sourceLang] ?: TranslateLanguage.ENGLISH
+                val targetCode = languageCodeMap[targetLang] ?: TranslateLanguage.ENGLISH
+
+                val options = TranslatorOptions.Builder()
+                    .setSourceLanguage(sourceCode)
+                    .setTargetLanguage(targetCode)
+                    .build()
+
+                val translator = Translation.getClient(options)
+
+                val conditions = DownloadConditions.Builder()
+                    .requireWifi()
+                    .build()
+
+                // Download model if needed
+                translator.downloadModelIfNeeded(conditions).await()
+
+                // Translate
+                val result = translator.translate(text).await()
+                translator.close()
+                result
+            } catch (e: Exception) {
+                "Translation error: ${e.message}"
+            }
         }
 
     suspend fun detectLanguage(text: String): String = withContext(Dispatchers.IO) {

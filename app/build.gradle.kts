@@ -53,9 +53,12 @@ dependencies {
     implementation("androidx.preference:preference-ktx:1.2.1")
     // ML Kit for text recognition
     implementation("com.google.mlkit:text-recognition:16.0.0")
+    // ML Kit Translate (downloaded on-device, ~20MB)
+    implementation("com.google.mlkit:translate:17.0.2")
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
     // DataStore for preferences
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     // Gson for JSON
